@@ -5,14 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Ángel & Rebeca — 15·11·2025</title>
   <meta name="description" content="Invitación de boda de Ángel y Rebeca. 15 de noviembre, La Huerta Eventos, Chihuahua." />
-  <!-- Tipografía editorial -->
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ángel & Rebeca — 15·11·2025">
+  <meta property="og:description" content="Invitación de boda. La Huerta Eventos, Chihuahua.">
+  <meta property="og:image" content="assets/og.jpg">
+  <meta property="og:url" content="https://tudominio.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
+
+  <!-- Datos estructurados -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Event",
+    "name":"Boda de Ángel & Rebeca",
+    "startDate":"2025-11-15T17:30:00-07:00",
+    "endDate":"2025-11-15T23:30:00-07:00",
+    "eventStatus":"https://schema.org/EventScheduled",
+    "eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
+    "location":{
+      "@type":"Place",
+      "name":"La Huerta Eventos",
+      "address":{
+        "@type":"PostalAddress",
+        "streetAddress":"C. 26 #801, Zarco",
+        "postalCode":"31052",
+        "addressLocality":"Chihuahua",
+        "addressRegion":"Chih.",
+        "addressCountry":"MX"
+      }
+    },
+    "image":["assets/og.jpg"],
+    "description":"Ceremonia y celebración. Solo adultos. Dress code elegante."
+  }
+  </script>
+
+  <!-- Tipografía -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Newsreader:opsz,wght@12..72,400;12..72,600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Overlay sutil que solo aparece si el navegador bloquea autoplay -->
+  <!-- Overlay sutil si el navegador bloquea autoplay -->
   <div id="soundPrompt" class="sound-prompt" hidden>
     <div class="sp-card">
       <div class="note" aria-hidden="true">♪</div>
@@ -21,7 +60,7 @@
     </div>
   </div>
 
-  <!-- Audio: intenta autoplay; si no, lo activamos al primer gesto -->
+  <!-- Audio -->
   <audio id="bgAudio" src="assets/audio/cancion.mp3" preload="auto" loop></audio>
 
   <main class="shell">
@@ -32,7 +71,7 @@
         <div class="dateline">GAZETA DE BODA · SÁBADO 15 NOV 2025 · CHIHUAHUA</div>
       </header>
 
-      <!-- HERO portada (a color) -->
+      <!-- HERO -->
       <section class="hero parallax reveal" style="--img: url('assets/galeria/01.jpg')">
         <div class="overlay"></div>
         <div class="hero-caption">
@@ -45,7 +84,7 @@
         <p>Con enorme alegría te invitamos a la ceremonia civil y celebración de nuestra boda. Agradecemos tu confirmación para preparar todo con cariño.</p>
       </section>
 
-      <!-- Detalles en “box” -->
+      <!-- Detalles -->
       <section class="details-box reveal">
         <div class="col date">
           <span class="kicker">FECHA</span>
@@ -73,7 +112,7 @@
           <h2>Cuenta regresiva</h2>
           <div id="countdown" class="countdown"></div>
 
-          <!-- Botones apilados y compactos -->
+          <!-- Botones compactos -->
           <button class="btn outline-dark slim" id="addCalBtn">Agregar a mi calendario</button>
           <a class="btn outline-dark slim" id="formBtn"
              href="https://docs.google.com/forms/d/e/1FAIpQLSfEiGVIjs-Qf1w3GRio9cISlYAJnzHDnTKQrgVojynuzAV_vA/viewform?usp=dialog"
@@ -83,12 +122,49 @@
         </div>
       </section>
 
-      <!-- Ventana oval a color -->
+      <!-- Info útil -->
+      <section class="card reveal" id="info">
+        <h2>Info útil</h2>
+        <ul class="bullets">
+          <li>🎩 <strong>Dress code:</strong> Mujeres—vestido midi/largo; pashmina o saquito sugerido. Hombres—traje oscuro; corbata opcional.</li>
+          <li>💛 <strong>Solo adultos:</strong> celebraremos sin niños.</li>
+          <li>📍 <a target="_blank" rel="noopener" href="https://maps.google.com/?q=La+Huerta+Eventos,+C.+26+%23801,+Zarco,+31052+Chihuahua,+Chih.">Ver cómo llegar</a></li>
+        </ul>
+      </section>
+
+      <!-- Regalos -->
+      <section class="card reveal" id="regalos">
+        <h2>Regalos</h2>
+        <p>Tu presencia es nuestro mayor regalo. Si deseas tener un detalle:</p>
+        <ul class="bullets">
+          <li>🎁 En el evento habrá una <strong>cajita</strong> para sobres en efectivo.</li>
+          <li>🏦 Transferencia SPEI:
+            <div class="bankbox">
+              <div><span class="mono">CLABE:</span> <span class="mono" id="clabeText">722969020681919430</span></div>
+              <div class="bank-meta">Institución: <span id="bankName">Mercado Pago W</span></div>
+              <div class="bank-meta">Beneficiario: <span id="recipientName">Rebeca Moran Torres</span></div>
+              <div class="bank-meta">Concepto sugerido: Boda Ángel &amp; Rebeca</div>
+
+              <div class="gift-actions">
+                <button class="btn outline-dark slim tiny" id="copyClabeBtn"
+                        data-copy="722969020681919430">Copiar CLABE</button>
+                <button class="btn outline-dark slim tiny" id="copyAllBtn">Copiar datos completos</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <!-- OPCIONAL: QR con el texto de transferencia (puedes borrarlo si no lo quieres) -->
+        <!-- <img class="gift-qr" alt="QR transferencia" width="160"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=CLABE%3A%20000000000000000000%0ATitular%3A%20Nombre%20Apellido%0ABanco%3A%20Tu%20banco%0AConcepto%3A%20Boda%20%C3%81ngel%20%26%20Rebeca"> -->
+      </section>
+
+
+      <!-- Ventana oval -->
       <section class="photo-window reveal">
         <figure class="window" style="--img: url('assets/galeria/15.jpeg')"></figure>
       </section>
 
-      <!-- Timeline vertical elegante -->
+      <!-- Timeline -->
       <section class="timeline-vertical card reveal" id="itinerario">
         <header class="tl-head">
           <h2>Itinerario · 15 Noviembre 2025</h2>

@@ -57,7 +57,7 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 
 .rsvp-grid{ display:grid; grid-template-columns:1fr; gap:8px; padding-top:6px }
 
-/* Countdown */
+/* Countdown grande */
 .countdown{ display:flex; gap:12px; justify-content:center; margin-top:.5rem; flex-wrap:wrap }
 .tick{ border:1px solid #111; padding:.8rem 1rem; border-radius:8px; min-width:72px; text-align:center; background:#fff }
 .tick strong{ display:block; font-size:1.6rem }
@@ -68,55 +68,57 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
   .tick span{ font-size:.95rem }
 }
 
-
+/* Botones compactos centrados (ancho al contenido) */
+.count .btn.slim{
+  display:block;
+  width:max-content;
+  margin:.6rem auto 0;
+  padding:.5rem .9rem;
+  font-size:.95rem;
+  box-shadow:0 4px 12px var(--shadow);
+}
+.count .btn.slim + .btn.slim{ margin-top:.5rem; }
 
 .photo-window{ padding:0 16px 6px }
 .window{ margin:0; aspect-ratio: 5/4; background:center/cover no-repeat; border-radius:999px / 85%;
   border:1px solid var(--rule); box-shadow:0 8px 24px var(--shadow) }
 
-/* ===== Timeline (versión “impresionante”: badge + card) ===== */
+/* ===== Timeline (badge + card, alineación precisa) ===== */
 .tl-head{ border-bottom:1px solid var(--rule); padding-bottom:.4rem; margin-bottom:.6rem }
 .tl-head .tl-meta{ color:var(--ink-3); letter-spacing:.02em; font-size:.9rem }
 
 .tl{ list-style:none; margin:0; padding:0; position:relative }
 
-/* ===== Alineación precisa de la línea y los puntos ===== */
+/* Variables de layout */
 .timeline-vertical{
   --time-col:130px;   /* ancho de la columna de hora */
   --rail-gap:14px;    /* separación entre hora y puntos */
-  --dot-col:24px;     /* ancho de la columna donde va el punto */
+  --dot-col:24px;     /* ancho de la columna del punto */
   overflow:visible;
 }
-
 .timeline-vertical .tl{ padding:.5rem 0 1rem; position:relative }
 
-/* La línea pasa exactamente por el centro de la columna del punto */
+/* Línea centrada respecto al punto */
 .timeline-vertical .tl::before{
-  content:"";
-  position:absolute; top:0; bottom:0;
+  content:""; position:absolute; top:0; bottom:0;
   left: calc(var(--time-col) + var(--rail-gap) + var(--dot-col)/2);
   width:2px; background:linear-gradient(180deg,#111,#888); border-radius:2px;
 }
 
-/* Columnas basadas en las mismas variables */
 .timeline-vertical .tl li{
   display:grid;
   grid-template-columns: var(--time-col) var(--dot-col) 1fr;
   gap: var(--rail-gap);
   align-items:center; padding:14px 0;
 }
-
-/* Centrar el punto en su columna */
-.timeline-vertical .tl li .dot{
-  width:14px; height:14px; border-radius:50%;
-  background:#111; position:relative;
-  box-shadow:0 0 0 6px #fff, inset 0 0 0 2px #111;
-  justify-self:center; /* <-- clave para que el punto quede centrado */
-}
-
-/* Hora y tarjeta (igual que ya tenías) */
 .timeline-vertical .tl li time{
   grid-column:1; text-align:right; font-weight:700; font-size:1.1rem; line-height:1.1; color:#111;
+}
+.timeline-vertical .tl li .dot{
+  grid-column:2; width:14px; height:14px; border-radius:50%;
+  background:#111; position:relative;
+  box-shadow:0 0 0 6px #fff, inset 0 0 0 2px #111;
+  justify-self:center;
 }
 .timeline-vertical .tl li .desc{
   grid-column:3; text-align:left; color:var(--ink-2);
@@ -131,28 +133,14 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 }
 .timeline-vertical .tl li.last .desc{ font-weight:600 }
 
-/* Responsivo: usa otras medidas pero mantiene la alineación */
 @media (max-width:520px){
-  .timeline-vertical{
-    --time-col:112px;
-    --rail-gap:10px;
-    --dot-col:22px;
-  }
-}
-/* Botones compactos centrados, ancho al contenido */
-.count .btn.slim{
-  display:block;
-  width:max-content;      /* clave para que no tomen todo el ancho */
-  margin:.6rem auto 0;    /* centrados */
-  padding:.5rem .9rem;
-  font-size:.95rem;
-  box-shadow:0 4px 12px var(--shadow);
-}
-.count .btn.slim + .btn.slim{  /* espacio entre ellos */
-  margin-top:.5rem;
+  .timeline-vertical{ --time-col:112px; --rail-gap:10px; --dot-col:22px; }
+  .timeline-vertical .tl li{ gap:10px }
+  .timeline-vertical .tl li time{ font-size:1rem }
+  .timeline-vertical .tl li .desc{ padding:10px 12px }
 }
 
-
+/* Galería */
 .gallery{ display:flex; gap:10px; overflow-x:auto; padding:6px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch }
 .gallery::-webkit-scrollbar{ height:8px }
 .gallery::-webkit-scrollbar-thumb{ background:#0003; border-radius:8px }
@@ -160,6 +148,10 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
   border:1px solid var(--rule); border-radius:12px; overflow:hidden; background:#000; box-shadow:0 10px 24px var(--shadow) }
 .gallery img{ width:100%; display:block }
 .hint{ text-align:center; color:#777; margin:.4rem 0 0 }
+
+/* Info útil lista */
+.bullets{ margin:.2rem 0 0; padding:0 0 0 1rem; }
+.bullets li{ margin:.35rem 0; color:var(--ink-2); }
 
 .contact{ text-align:center }
 .footer{ text-align:center; padding:14px; color:#666; border-top:1px solid var(--rule) }
@@ -172,14 +164,13 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 .reveal.in-view{ opacity:1; transform:none }
 .parallax{ background-attachment:scroll }
 
-/* ---- AUDIO CHIP flotante dentro del papel (fixed + JS) ---- */
+/* ---- AUDIO CHIP flotante (fixed + JS) ---- */
 .audio-chip{
   position:fixed; z-index:50; display:flex; align-items:center; gap:10px;
   height:44px; padding:6px 10px;
   background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
   border:1px solid #111; border-radius:12px;
   box-shadow:0 10px 22px rgba(0,0,0,.20);
-  /* left, top, width via JS */
 }
 .acov{ width:32px; height:32px; border-radius:8px; background:#ddd center/cover no-repeat; border:1px solid #111; flex:0 0 auto }
 .atxt{ min-width:0; flex:1 1 auto; line-height:1.1 }
@@ -205,3 +196,20 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
   .paper{ max-width:860px; border-radius:22px }
   .details-box{ grid-template-columns:1fr 1fr 1fr }
 }
+
+/* --- Regalos / Transferencia --- */
+.bankbox{ margin:.4rem 0 0; padding:.6rem .75rem; border:1px dashed var(--rule); border-radius:10px; background:#fff }
+.mono{ font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing:.03em }
+.bank-meta{ color:var(--ink-3); font-size:.9rem; margin-top:.15rem }
+.gift-actions{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem }
+.btn.tiny{ padding:.35rem .6rem; font-size:.85rem; box-shadow:0 3px 9px var(--shadow) }
+.gift-qr{ display:block; margin:.6rem 0 0 }
+
+/* Toast de copiado */
+.toast{
+  position:fixed; left:50%; transform:translateX(-50%) translateY(6px);
+  bottom:18px; background:#111; color:#fff; padding:.5rem .8rem;
+  border-radius:999px; box-shadow:0 10px 24px rgba(0,0,0,.28);
+  opacity:0; pointer-events:none; transition:opacity .18s, transform .18s; z-index:120;
+}
+.toast.show{ opacity:1; transform:translateX(-50%) }

@@ -1,30 +1,25 @@
+/* ========= Versión de assets para caché ========= */
+const ASSET_VER = '1'; // súbelo a '2' cuando cambies fotos
+
 /* ========= UTIL: resolver extensión (.jpg/.jpeg/.JPG/.png) ========= */
 function resolveImage(base){
   const exts=['.jpg','.jpeg','.JPG','.png'];
   return new Promise((res,rej)=>{
     (function next(i=0){
       if(i>=exts.length) return rej();
-      const src=base+exts[i]+'?v='+Date.now();
+      const src=base+exts[i]+'?v='+ASSET_VER;
       const img=new Image();
-      img.onload=()=>res(src.replace(/\?v=\d+$/,''));
+      img.onload=()=>res(src);
       img.onerror=()=>next(i+1);
       img.src=src;
     })();
   });
 }
 
-/* ========= WhatsApp RSVP (único botón) ========= */
-const waBtn=document.getElementById('waBtn');
-if(waBtn){
-  const phone='5216142151613';
-  const msg=encodeURIComponent('Hola, quiero confirmar mi asistencia a la boda de Ángel y Rebeca el 15 de noviembre. Mi nombre es: ');
-  waBtn.href=`https://wa.me/${phone}?text=${msg}`;
-}
-
 /* ========= Cuenta regresiva ========= */
 const targetDate=new Date('2025-11-15T17:30:00-07:00');
 const cdEl=document.getElementById('countdown');
-function pad(n){return String(n).padStart(2,'0')}
+const pad=n=>String(n).padStart(2,'0');
 function renderCountdown(){
   if(!cdEl) return;
   const now=new Date();
@@ -49,12 +44,12 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 function parallax(){ const y=window.scrollY; document.querySelectorAll('.parallax').forEach(el=>{ el.style.backgroundPosition=`center calc(50% + ${Math.round(y*0.06)}px)`; }); }
 parallax(); window.addEventListener('scroll',parallax,{passive:true});
 
-/* ========= Imágenes (detectando extensión) ========= */
+/* ========= Imágenes ========= */
 // HERO 01
 resolveImage('assets/galeria/01').then(src=>{
   const hero=document.querySelector('.hero'); if(hero) hero.style.backgroundImage=`url('${src}')`;
 });
-// Óvalo 02
+// Óvalo 15
 resolveImage('assets/galeria/15').then(src=>{
   const win=document.querySelector('.window'); if(win) win.style.backgroundImage=`url('${src}')`;
 });
@@ -89,105 +84,78 @@ function openLightbox(src,alt){
   document.body.appendChild(lb);
 }
 
-/* ========= AUDIO CHIP (compacto dentro del papel) ========= */
+/* ========= AUDIO CHIP ========= */
 (function(){
   const audio=document.getElementById('bgAudio'); if(!audio) return;
 
-  // construir chip y anclarlo al final del .paper
+  // chip
   const chip=document.createElement('div');
-  chip.className='audio-chip';
-  chip.id='audioChip';
+  chip.className='audio-chip'; chip.id='audioChip';
   chip.innerHTML=`
     <div class="acov" id="acov"></div>
     <div class="atxt"><div class="t">Ángel & Rebeca</div><div class="a">Nuestra canción</div></div>
     <button class="abtn play" id="aplay" aria-label="Reproducir/Pausar"><span class="ai"></span></button>
     <div class="aprog"><span id="apbar"></span></div>`;
   document.querySelector('.paper')?.appendChild(chip);
-    // --- Posicionar el chip "dentro" del papel mientras haces scroll ---
-  const paper = document.querySelector('.paper');
 
-  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+  const paper = document.querySelector('.paper');
+  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
   function positionAudioChip(){
     if(!paper || !chip) return;
-
-    const m = 12; // margen interno respecto a los bordes del papel
-    const rect = paper.getBoundingClientRect(); // papel relativo al viewport
-    const ch   = chip.offsetHeight || 44;
-
-    // ancho y left para que coincida con el papel
-    const left  = Math.round(rect.left) + m;
-    const width = Math.max(180, Math.round(rect.width) - m*2);
-
-    // “pegar” al borde inferior del viewport, pero sin salirse del papel
-    const desiredTop = window.innerHeight - m - ch;    // pegado al bottom del viewport
-    const minTop     = Math.round(rect.top) + m;       // no subir más que el top del papel
-    const maxTop     = Math.round(rect.bottom) - m - ch; // no bajar más que el bottom del papel
-    const top        = clamp(desiredTop, minTop, maxTop);
-
-    chip.style.left  = `${left}px`;
-    chip.style.width = `${width}px`;
-    chip.style.top   = `${top}px`;
-
-    // Ocultar si el papel no está visible
+    const m=12, rect=paper.getBoundingClientRect(), ch=chip.offsetHeight||44;
+    const left=Math.round(rect.left)+m;
+    const width=Math.max(180, Math.round(rect.width)-m*2);
+    const desiredTop=window.innerHeight - m - ch;
+    const minTop=Math.round(rect.top)+m;
+    const maxTop=Math.round(rect.bottom)-m - ch;
+    const top=clamp(desiredTop,minTop,maxTop);
+    chip.style.left=`${left}px`; chip.style.width=`${width}px`; chip.style.top=`${top}px`;
     const visible = rect.bottom > 0 && rect.top < window.innerHeight;
     chip.style.visibility = visible ? 'visible' : 'hidden';
   }
-
-  // Colocación inicial
   positionAudioChip();
+  let raf; const schedule=()=>{ cancelAnimationFrame(raf); raf=requestAnimationFrame(positionAudioChip); };
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',schedule);
 
-  // Recolocar en scroll/resize (suavizado con rAF)
-  let raf;
-  const schedule = ()=>{ cancelAnimationFrame(raf); raf = requestAnimationFrame(positionAudioChip); };
-  window.addEventListener('scroll', schedule, {passive:true});
-  window.addEventListener('resize', schedule);
-
-
-  // portada = hero
+  // portada para la miniatura
   resolveImage('assets/galeria/01').then(src=>{ const c=document.getElementById('acov'); if(c) c.style.backgroundImage=`url('${src}')`; });
 
   const btn=document.getElementById('aplay');
   const bar=document.getElementById('apbar');
-
   const setBtn=p=>{ btn.classList.toggle('play',!p); btn.classList.toggle('pause',p); };
   const fade=(el,target=.5,step=.04,ms=70)=>{ let v=0; const t=setInterval(()=>{ v=Math.min(target,v+step); el.volume=v; if(v>=target) clearInterval(t); },ms); };
 
-  // mostrar chip (sticky dentro del papel)
-  // Autoplay responsable
   audio.volume=0; audio.muted=true;
   audio.play().then(()=>{ setTimeout(()=>{ audio.muted=false; fade(audio,.45); },250); setBtn(true); })
-              .catch(()=>{ setBtn(false); /* con un tap en el chip se reproduce */ });
+              .catch(()=>{ setBtn(false); });
 
-  // Toggle
   btn.addEventListener('click',e=>{
     e.stopPropagation();
     if(audio.paused){ audio.muted=false; if(audio.volume===0) audio.volume=.45; audio.play(); setBtn(true); }
     else { audio.pause(); setBtn(false); }
   });
-  // Tap en el chip también juega/pausa (mobile friendly)
   chip.addEventListener('click',e=>{
-    if(e.target===btn) return; // ya manejado arriba
+    if(e.target===btn) return;
     if(audio.paused){ audio.muted=false; if(audio.volume===0) audio.volume=.45; audio.play(); setBtn(true); }
     else { audio.pause(); setBtn(false); }
   });
 
-  // Progreso
   audio.addEventListener('timeupdate',()=>{
     if(!isFinite(audio.duration)||audio.duration<=0) return;
     bar.style.width=((audio.currentTime/audio.duration)*100)+'%';
   });
 })();
+
 /* ===== Botón "Agregar a mi calendario" ===== */
 (function(){
   const btn = document.getElementById('addCalBtn');
   if(!btn) return;
 
-  // Datos del evento
   const title = 'Boda de Ángel & Rebeca';
   const location = 'La Huerta Eventos, C. 26 #801, Zarco, 31052 Chihuahua, Chih.';
-// Reemplaza el details:
-const details = `Ceremonia y celebración.
+  const details = `Ceremonia y celebración.
 
 👗 Dress code
 Mujeres: vestido midi o largo; tacón cómodo o wedge.
@@ -195,7 +163,7 @@ Mujeres: vestido midi o largo; tacón cómodo o wedge.
 Hombres: traje oscuro, camisa formal; corbata opcional.
 
 💛 Con cariño
-Será una celebración solo para adultos (no habrá niños).
+Será una celebración solo para adultos.
 
 📋 Itinerario
 17:30–18:00  Llegada de invitados · tragos de bienvenida · música suave
@@ -210,16 +178,13 @@ Será una celebración solo para adultos (no habrá niños).
 
 Por favor llegar 15 minutos antes.`;
 
-// Para ICS, preserva saltos de línea:
-const detailsForICS = details.replace(/\n/g, '\\n');
+  const detailsForICS = details.replace(/\n/g,'\\n');
 
-  // Horarios en hora local Chihuahua (America/Ciudad_Juarez).
-  // Para Google Calendar usamos UTC (Z) con la tz indicada; para .ics dejamos hora "flotante" + un header de zona.
-  // 15 nov 2025 -> 18:00 a 23:30 locales. En UTC (aprox. MST, UTC-7): 01:00Z a 06:30Z del 16.
-  const gStartUTC = '20251116T003000Z'; 
+  // 15 nov 2025 -> 17:30 a 23:30 locales (America/Ciudad_Juarez).
+  // En UTC: 00:30Z a 06:30Z del 16.
+  const gStartUTC = '20251116T003000Z';
   const gEndUTC   = '20251116T063000Z';
 
-  // 1) Enlace de Google Calendar
   const gcalUrl =
     'https://calendar.google.com/calendar/render?action=TEMPLATE' +
     '&text=' + encodeURIComponent(title) +
@@ -228,7 +193,6 @@ const detailsForICS = details.replace(/\n/g, '\\n');
     '&location=' + encodeURIComponent(location) +
     '&ctz=' + encodeURIComponent('America/Ciudad_Juarez');
 
-  // 2) Archivo ICS (Apple/Outlook/etc.)
   const ics =
 `BEGIN:VCALENDAR
 VERSION:2.0
@@ -242,7 +206,7 @@ UID:${crypto.randomUUID ? crypto.randomUUID() : ('uid-'+Date.now())}@invitacion-
 SUMMARY:${title}
 DTSTART:20251115T173000
 DTEND:20251115T233000
-DESCRIPTION:${details.replace(/\n/g,' ')}
+DESCRIPTION:${detailsForICS}
 LOCATION:${location}
 BEGIN:VALARM
 TRIGGER:-PT1H
@@ -265,10 +229,42 @@ END:VCALENDAR`;
 
   btn.addEventListener('click', (e)=>{
     e.preventDefault();
-    // Detección simple: Apple -> ICS, resto -> Google Calendar
     const ua = navigator.userAgent || '';
     const isApple = /iPhone|iPad|Macintosh/.test(ua);
     if (isApple) downloadICS();
     else window.open(gcalUrl, '_blank', 'noopener');
+  });
+})();
+
+/* ========= Regalos: copiar CLABE/datos ========= */
+(function(){
+  const btnClabe = document.getElementById('copyClabeBtn');
+  const btnAll   = document.getElementById('copyAllBtn');
+  if(!btnClabe && !btnAll) return;
+
+  const clabe = (document.getElementById('clabeText')?.textContent || '').replace(/\s+/g,'');
+  const bank  = document.getElementById('bankName')?.textContent || '';
+  const recip = document.getElementById('recipientName')?.textContent || '';
+
+  function toast(msg){
+    let t=document.getElementById('toast');
+    if(!t){ t=document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+    t.textContent=msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),1500);
+  }
+  async function copy(text){
+    try{ await navigator.clipboard.writeText(text); toast('Copiado ✅'); }
+    catch(e){
+      // Fallback
+      const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); ta.remove(); toast('Copiado ✅');
+    }
+  }
+
+  btnClabe?.addEventListener('click', ()=> copy(btnClabe.dataset.copy || clabe));
+  btnAll?.addEventListener('click', ()=>{
+    const full = `CLABE: ${clabe}\nTitular: ${recip}\nBanco: ${bank}\nConcepto: Boda Ángel & Rebeca`;
+    copy(full);
   });
 })();
