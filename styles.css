@@ -230,3 +230,13 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 :root[data-theme="dark"] .masthead{
   background:repeating-linear-gradient(180deg,#121212,#121212 32px,#0f0f0f 33px);
 }
+
+/* Fuerza el estilo del masthead según el toggle */
+:root[data-theme="light"] .masthead{
+  background:repeating-linear-gradient(180deg, var(--paper), var(--paper) 32px, #f6f6f6 33px) !important;
+  border-bottom-color: var(--rule);
+}
+:root[data-theme="dark"] .masthead{
+  background:repeating-linear-gradient(180deg, #121212, #121212 32px, #0f0f0f 33px) !important;
+  border-bottom-color: var(--rule);
+}
