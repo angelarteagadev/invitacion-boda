@@ -162,8 +162,6 @@ Mujeres: vestido midi o largo; tacón cómodo o wedge.
 (Recomendamos llevar pashmina o saquito ligero por el clima fresco de la noche).
 Hombres: traje oscuro, camisa formal; corbata opcional.
 
-💛 Con cariño
-Será una celebración solo para adultos.
 
 📋 Itinerario
 17:30–18:00  Llegada de invitados · tragos de bienvenida · música suave
