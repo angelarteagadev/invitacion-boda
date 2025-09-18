@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ángel & Rebeca — 15·11·2025</title>
+  <meta name="description" content="Invitación de boda de Ángel y Rebeca. 15 de noviembre, La Huerta Eventos, Chihuahua." />
+  <!-- Tipografía editorial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Newsreader:opsz,wght@12..72,400;12..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Overlay sutil que solo aparece si el navegador bloquea autoplay -->
+  <div id="soundPrompt" class="sound-prompt" hidden>
+    <div class="sp-card">
+      <div class="note" aria-hidden="true">♪</div>
+      <div class="sp-title">Toca para escuchar la canción</div>
+      <div class="sp-sub">Activa el sonido de tu invitación</div>
+    </div>
+  </div>
+
+  <!-- Audio: intenta autoplay; si no, lo activamos al primer gesto -->
+  <audio id="bgAudio" src="assets/audio/cancion.mp3" preload="auto" loop></audio>
+
+  <main class="shell">
+    <article class="paper">
+
+      <header class="masthead reveal">
+        <div class="brand">ÁNGEL • REBECA</div>
+        <div class="dateline">GAZETA DE BODA · SÁBADO 15 NOV 2025 · CHIHUAHUA</div>
+      </header>
+
+      <!-- HERO portada (a color) -->
+      <section class="hero parallax reveal" style="--img: url('assets/galeria/01.jpg')">
+        <div class="overlay"></div>
+        <div class="hero-caption">
+          <h1>¡Nos casamos!</h1>
+          <p>Te invitamos a celebrar con nosotros.</p>
+        </div>
+      </section>
+
+      <section class="lede reveal">
+        <p>Con enorme alegría te invitamos a la ceremonia civil y celebración de nuestra boda. Agradecemos tu confirmación para preparar todo con cariño.</p>
+      </section>
+
+      <!-- Detalles en “box” -->
+      <section class="details-box reveal">
+        <div class="col date">
+          <span class="kicker">FECHA</span>
+          <div class="big">15</div>
+          <div class="month">NOV</div>
+          <div class="year">2025</div>
+        </div>
+        <div class="col when">
+          <span class="kicker">HORARIOS</span>
+          <div class="row"><strong>Acceso</strong><span>17:30</span></div>
+          <div class="row"><strong>Ceremonia</strong><span>18:00</span></div>
+        </div>
+        <div class="col where">
+          <span class="kicker">LUGAR</span>
+          <div class="place">La Huerta Eventos</div>
+          <div class="addr">C. 26 #801, Zarco, 31052 Chihuahua, Chih.</div>
+          <a class="btn outline" target="_blank" rel="noopener"
+             href="https://maps.google.com/?q=La+Huerta+Eventos,+Chihuahua">Ver mapa</a>
+        </div>
+      </section>
+
+      <!-- RSVP + Countdown -->
+      <section class="rsvp-grid reveal" id="rsvp">
+        <div class="card">
+          <h2>RSVP</h2>
+          <p>Confirma tu asistencia por WhatsApp.</p>
+          <a class="btn" id="waBtn" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+        </div>
+
+        <div class="count card">
+          <h2>Cuenta regresiva</h2>
+          <div id="countdown" class="countdown"></div>
+        </div>
+      </section>
+
+      <!-- Ventana oval a color -->
+      <section class="photo-window reveal">
+        <figure class="window" style="--img: url('assets/galeria/02.jpg')"></figure>
+      </section>
+
+      <!-- Timeline vertical elegante -->
+      <section class="timeline-vertical card reveal" id="itinerario">
+        <header class="tl-head">
+          <h2>Itinerario · 15 Noviembre 2025</h2>
+          <div class="tl-meta">5:30 pm – 11:30 pm · Jardín</div>
+        </header>
+        <ol class="tl">
+          <li><time>17:30–18:00</time><div class="dot"></div><div class="desc">Llegada de invitados · tragos de bienvenida · música suave</div></li>
+          <li><time>18:00–18:40</time><div class="dot"></div><div class="desc">Ceremonia civil con juez · votos con MC</div></li>
+          <li><time>18:40–18:50</time><div class="dot"></div><div class="desc">Fotos rápidas post-ceremonia</div></li>
+          <li><time>18:50–19:30</time><div class="dot"></div><div class="desc">Cena</div></li>
+          <li><time>19:30–20:20</time><div class="dot"></div><div class="desc">Juegos y dinámicas con invitados</div></li>
+          <li><time>20:20–20:30</time><div class="dot"></div><div class="desc">Preparación para el baile</div></li>
+          <li><time>20:30–20:40</time><div class="dot"></div><div class="desc">Vals de novios</div></li>
+          <li><time>20:40–23:20</time><div class="dot"></div><div class="desc">Fiesta y baile</div></li>
+          <li class="last"><time>23:20–23:30</time><div class="dot"></div><div class="desc">Última canción · despedida</div></li>
+        </ol>
+      </section>
+
+      <!-- Galería -->
+      <section class="card reveal">
+        <h2>Galería</h2>
+        <div id="gallery" class="gallery"></div>
+        <p class="hint">Desliza para ver más • Toca para ampliar</p>
+      </section>
+
+      <!-- Contacto -->
+      <section class="contact card reveal">
+        <h2>Contacto</h2>
+        <p>Para cualquier duda, escribe a nuestra wedding planner.</p>
+        <a class="btn outline-dark" href="https://wa.me/5216142151613" target="_blank" rel="noopener">WhatsApp Organización</a>
+      </section>
+
+      <footer class="footer reveal">
+        <small>Con cariño, Ángel & Rebeca · Chihuahua · 15 de noviembre de 2025</small>
+      </footer>
+
+      <div class="sticky"><a class="btn" href="#rsvp">Confirmar asistencia</a></div>
+    </article>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
