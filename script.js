@@ -268,3 +268,28 @@ END:VCALENDAR`;
     copy(full);
   });
 })();
+/* ========= Toggle de tema claro/oscuro ========= */
+(function(){
+  const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  if(!btn) return;
+
+  // Preferencia guardada o sistema
+  const saved = localStorage.getItem('theme');
+  if(saved){
+    root.setAttribute('data-theme', saved);
+    btn.textContent = saved==='dark' ? '☀️' : '🌙';
+  }else{
+    const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    btn.textContent = prefersDark ? '☀️' : '🌙';
+  }
+
+  btn.addEventListener('click', ()=>{
+    const cur = root.getAttribute('data-theme') || 'light';
+    const next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    btn.textContent = next==='dark' ? '☀️' : '🌙';
+  });
+})();
