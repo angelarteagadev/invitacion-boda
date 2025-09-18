@@ -22,7 +22,7 @@ if(waBtn){
 }
 
 /* ========= Cuenta regresiva ========= */
-const targetDate=new Date('2025-11-15T18:00:00-06:00');
+const targetDate=new Date('2025-11-15T17:30:00-07:00');
 const cdEl=document.getElementById('countdown');
 function pad(n){return String(n).padStart(2,'0')}
 function renderCountdown(){
@@ -55,7 +55,7 @@ resolveImage('assets/galeria/01').then(src=>{
   const hero=document.querySelector('.hero'); if(hero) hero.style.backgroundImage=`url('${src}')`;
 });
 // Óvalo 02
-resolveImage('assets/galeria/02').then(src=>{
+resolveImage('assets/galeria/15').then(src=>{
   const win=document.querySelector('.window'); if(win) win.style.backgroundImage=`url('${src}')`;
 });
 // Galería 03..14
@@ -176,5 +176,99 @@ function openLightbox(src,alt){
   audio.addEventListener('timeupdate',()=>{
     if(!isFinite(audio.duration)||audio.duration<=0) return;
     bar.style.width=((audio.currentTime/audio.duration)*100)+'%';
+  });
+})();
+/* ===== Botón "Agregar a mi calendario" ===== */
+(function(){
+  const btn = document.getElementById('addCalBtn');
+  if(!btn) return;
+
+  // Datos del evento
+  const title = 'Boda de Ángel & Rebeca';
+  const location = 'La Huerta Eventos, C. 26 #801, Zarco, 31052 Chihuahua, Chih.';
+// Reemplaza el details:
+const details = `Ceremonia y celebración.
+
+👗 Dress code
+Mujeres: vestido midi o largo; tacón cómodo o wedge.
+(Recomendamos llevar pashmina o saquito ligero por el clima fresco de la noche).
+Hombres: traje oscuro, camisa formal; corbata opcional.
+
+💛 Con cariño
+Será una celebración solo para adultos (no habrá niños).
+
+📋 Itinerario
+17:30–18:00  Llegada de invitados · tragos de bienvenida · música suave
+18:00–18:40  Ceremonia civil con juez · votos con MC
+18:40–18:50  Fotos rápidas post-ceremonia
+18:50–19:30  Cena
+19:30–20:20  Juegos y dinámicas con invitados
+20:20–20:30  Preparación para el baile
+20:30–20:40  Vals de novios
+20:40–23:20  Fiesta y baile
+23:20–23:30  Última canción · despedida
+
+Por favor llegar 15 minutos antes.`;
+
+// Para ICS, preserva saltos de línea:
+const detailsForICS = details.replace(/\n/g, '\\n');
+
+  // Horarios en hora local Chihuahua (America/Ciudad_Juarez).
+  // Para Google Calendar usamos UTC (Z) con la tz indicada; para .ics dejamos hora "flotante" + un header de zona.
+  // 15 nov 2025 -> 18:00 a 23:30 locales. En UTC (aprox. MST, UTC-7): 01:00Z a 06:30Z del 16.
+  const gStartUTC = '20251116T003000Z'; 
+  const gEndUTC   = '20251116T063000Z';
+
+  // 1) Enlace de Google Calendar
+  const gcalUrl =
+    'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=' + encodeURIComponent(title) +
+    '&dates=' + gStartUTC + '/' + gEndUTC +
+    '&details=' + encodeURIComponent(details) +
+    '&location=' + encodeURIComponent(location) +
+    '&ctz=' + encodeURIComponent('America/Ciudad_Juarez');
+
+  // 2) Archivo ICS (Apple/Outlook/etc.)
+  const ics =
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Invitacion Boda//angel-rebeca//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Boda Ángel y Rebeca
+X-WR-TIMEZONE:America/Ciudad_Juarez
+BEGIN:VEVENT
+UID:${crypto.randomUUID ? crypto.randomUUID() : ('uid-'+Date.now())}@invitacion-boda
+SUMMARY:${title}
+DTSTART:20251115T173000
+DTEND:20251115T233000
+DESCRIPTION:${details.replace(/\n/g,' ')}
+LOCATION:${location}
+BEGIN:VALARM
+TRIGGER:-PT1H
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio: Boda de Ángel & Rebeca en 1 hora
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+
+  function downloadICS(){
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.download = 'Boda-Angel-Rebeca.ics';
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+  }
+
+  btn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    // Detección simple: Apple -> ICS, resto -> Google Calendar
+    const ua = navigator.userAgent || '';
+    const isApple = /iPhone|iPad|Macintosh/.test(ua);
+    if (isApple) downloadICS();
+    else window.open(gcalUrl, '_blank', 'noopener');
   });
 })();

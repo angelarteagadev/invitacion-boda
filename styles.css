@@ -56,29 +56,102 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 .card{ margin:16px; padding:16px; border:1px solid var(--rule); border-radius:12px; background:#fff }
 
 .rsvp-grid{ display:grid; grid-template-columns:1fr; gap:8px; padding-top:6px }
-.countdown{ display:flex; gap:8px; justify-content:center; margin-top:.5rem; flex-wrap:wrap }
-.tick{ border:1px solid #111; padding:.5rem .6rem; border-radius:8px; min-width:56px; text-align:center; background:#fff }
-.tick strong{ display:block; font-size:1.1rem }
-.tick span{ font-size:.72rem; color:#444; letter-spacing:.08em }
+
+/* Countdown */
+.countdown{ display:flex; gap:12px; justify-content:center; margin-top:.5rem; flex-wrap:wrap }
+.tick{ border:1px solid #111; padding:.8rem 1rem; border-radius:8px; min-width:72px; text-align:center; background:#fff }
+.tick strong{ display:block; font-size:1.6rem }
+.tick span{ font-size:.85rem; color:#444; letter-spacing:.09em }
+@media (min-width:600px){
+  .tick{ padding:1rem 1.2rem; min-width:84px }
+  .tick strong{ font-size:1.9rem }
+  .tick span{ font-size:.95rem }
+}
+
+
 
 .photo-window{ padding:0 16px 6px }
 .window{ margin:0; aspect-ratio: 5/4; background:center/cover no-repeat; border-radius:999px / 85%;
   border:1px solid var(--rule); box-shadow:0 8px 24px var(--shadow) }
 
-.timeline-vertical{ overflow:hidden }
+/* ===== Timeline (versión “impresionante”: badge + card) ===== */
 .tl-head{ border-bottom:1px solid var(--rule); padding-bottom:.4rem; margin-bottom:.6rem }
 .tl-head .tl-meta{ color:var(--ink-3); letter-spacing:.02em; font-size:.9rem }
+
 .tl{ list-style:none; margin:0; padding:0; position:relative }
-.tl::before{ content:""; position:absolute; left:50%; transform:translateX(-1px); top:.25rem; bottom:.25rem; width:2px; background:linear-gradient(180deg,#111,#888) }
-.tl li{ display:grid; grid-template-columns:1fr 16px 1fr; align-items:flex-start; gap:12px; padding:.7rem 0 }
-.tl li .dot{ width:16px; height:16px; border-radius:50%; background:#111; position:relative; top:.2rem; box-shadow:0 0 0 4px #fff }
-.tl li time{ font-weight:700; color:#111; text-align:right; padding-right:6px; white-space:nowrap }
-.tl li .desc{ color:var(--ink-2); line-height:1.55 }
-.tl li:nth-child(odd) time{ grid-column:1; text-align:right }
-.tl li:nth-child(odd) .desc{ grid-column:3 }
-.tl li:nth-child(even) time{ grid-column:3; text-align:left; order:3 }
-.tl li:nth-child(even) .desc{ grid-column:1; text-align:right; order:1 }
-.tl li.last .desc{ font-weight:600 }
+
+/* ===== Alineación precisa de la línea y los puntos ===== */
+.timeline-vertical{
+  --time-col:130px;   /* ancho de la columna de hora */
+  --rail-gap:14px;    /* separación entre hora y puntos */
+  --dot-col:24px;     /* ancho de la columna donde va el punto */
+  overflow:visible;
+}
+
+.timeline-vertical .tl{ padding:.5rem 0 1rem; position:relative }
+
+/* La línea pasa exactamente por el centro de la columna del punto */
+.timeline-vertical .tl::before{
+  content:"";
+  position:absolute; top:0; bottom:0;
+  left: calc(var(--time-col) + var(--rail-gap) + var(--dot-col)/2);
+  width:2px; background:linear-gradient(180deg,#111,#888); border-radius:2px;
+}
+
+/* Columnas basadas en las mismas variables */
+.timeline-vertical .tl li{
+  display:grid;
+  grid-template-columns: var(--time-col) var(--dot-col) 1fr;
+  gap: var(--rail-gap);
+  align-items:center; padding:14px 0;
+}
+
+/* Centrar el punto en su columna */
+.timeline-vertical .tl li .dot{
+  width:14px; height:14px; border-radius:50%;
+  background:#111; position:relative;
+  box-shadow:0 0 0 6px #fff, inset 0 0 0 2px #111;
+  justify-self:center; /* <-- clave para que el punto quede centrado */
+}
+
+/* Hora y tarjeta (igual que ya tenías) */
+.timeline-vertical .tl li time{
+  grid-column:1; text-align:right; font-weight:700; font-size:1.1rem; line-height:1.1; color:#111;
+}
+.timeline-vertical .tl li .desc{
+  grid-column:3; text-align:left; color:var(--ink-2);
+  background:#fff; border:1px solid var(--rule); border-radius:12px;
+  padding:12px 14px; line-height:1.55;
+  box-shadow:0 8px 20px var(--shadow);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.timeline-vertical .tl li .desc:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 28px rgba(0,0,0,.18);
+}
+.timeline-vertical .tl li.last .desc{ font-weight:600 }
+
+/* Responsivo: usa otras medidas pero mantiene la alineación */
+@media (max-width:520px){
+  .timeline-vertical{
+    --time-col:112px;
+    --rail-gap:10px;
+    --dot-col:22px;
+  }
+}
+/* Botones compactos centrados, ancho al contenido */
+.count .btn.slim{
+  display:block;
+  width:max-content;      /* clave para que no tomen todo el ancho */
+  margin:.6rem auto 0;    /* centrados */
+  padding:.5rem .9rem;
+  font-size:.95rem;
+  box-shadow:0 4px 12px var(--shadow);
+}
+.count .btn.slim + .btn.slim{  /* espacio entre ellos */
+  margin-top:.5rem;
+}
+
 
 .gallery{ display:flex; gap:10px; overflow-x:auto; padding:6px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch }
 .gallery::-webkit-scrollbar{ height:8px }
@@ -101,16 +174,13 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 
 /* ---- AUDIO CHIP flotante dentro del papel (fixed + JS) ---- */
 .audio-chip{
-  position:fixed;            /* ahora fixed; lo ubicamos con JS */
-  z-index:50;
-  display:flex; align-items:center; gap:10px;
+  position:fixed; z-index:50; display:flex; align-items:center; gap:10px;
   height:44px; padding:6px 10px;
   background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
   border:1px solid #111; border-radius:12px;
   box-shadow:0 10px 22px rgba(0,0,0,.20);
-  /* estas se calculan por JS: left, top, width */
+  /* left, top, width via JS */
 }
-
 .acov{ width:32px; height:32px; border-radius:8px; background:#ddd center/cover no-repeat; border:1px solid #111; flex:0 0 auto }
 .atxt{ min-width:0; flex:1 1 auto; line-height:1.1 }
 .atxt .t{ font-weight:700; font-size:.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
@@ -118,7 +188,6 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 .abtn{ width:34px; height:34px; border-radius:999px; border:1px solid #111; background:#fff; display:grid; place-items:center; cursor:pointer; flex:0 0 auto }
 .ai{ width:0; height:0 }
 .abtn.play .ai{ border-style:solid; border-width:8px 0 8px 14px; border-color:transparent transparent transparent #111 }
-/* icono de PAUSE perfectamente centrado */
 .abtn.pause .ai{
   position:relative; width:14px; height:16px; background:none; box-shadow:none;
 }
@@ -129,10 +198,8 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
 .abtn.pause .ai::before{ left:0; }
 .abtn.pause .ai::after { right:0; }
 
-
 .aprog{ position:absolute; left:8px; right:8px; bottom:5px; height:3px; border-radius:3px; background:#0001; overflow:hidden }
 .aprog span{ display:block; height:100%; width:0%; background:#111; transition:width .15s linear }
-
 
 @media (min-width:820px){
   .paper{ max-width:860px; border-radius:22px }
