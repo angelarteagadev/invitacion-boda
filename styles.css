@@ -240,3 +240,6 @@ p{ margin:.5rem 0; line-height:1.65; color:var(--ink-3) }
   background:repeating-linear-gradient(180deg, #121212, #121212 32px, #0f0f0f 33px) !important;
   border-bottom-color: var(--rule);
 }
+
+.gift-links { margin-top:.4rem; }
+.gift-note { margin:.35rem 0 0; font-size:.92rem; color:var(--ink-3); }
