@@ -223,7 +223,7 @@ body::before{
   }
   /* fondo general con la imagen 17 */
   body{
-    background:#000 url('assets/galeria/17.jpeg') center/cover no-repeat fixed;
+    background:#000 url('assets/galeria/18.jpeg') center/cover no-repeat fixed;
   }
   .masthead{
     background:repeating-linear-gradient(180deg,#121212,#121212 32px,#0f0f0f 33px);
@@ -251,7 +251,7 @@ body::before{
 }
 /* imagen de fondo cuando el toggle está en dark */
 :root[data-theme="dark"] body{
-  background:#000 url('assets/galeria/17.jpeg') center/cover no-repeat fixed;
+  background:#000 url('assets/galeria/18.jpeg') center/cover no-repeat fixed;
 }
 :root[data-theme="dark"] .masthead{
   background:repeating-linear-gradient(180deg,#121212,#121212 32px,#0f0f0f 33px);
@@ -383,7 +383,7 @@ body::before{
 
 /* Fondo general con la imagen 17 (sin alternar a claro) */
 body{
-  background:#000 url('assets/galeria/17.jpeg') center/cover no-repeat fixed;
+  background:#000 url('assets/galeria/18.jpeg') center/cover no-repeat fixed;
 }
 
 /* iPhone/iPad: evitar zoom raro con background-attachment: fixed */
