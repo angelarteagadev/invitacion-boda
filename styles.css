@@ -154,7 +154,10 @@ body::before{
 .bullets li{ margin:.35rem 0; color:var(--ink-2) }
 
 .contact{ text-align:center }
-.footer{ text-align:center; padding:14px; color:#666; border-top:1px solid var(--rule) }
+.footer{ text-align:center; padding:14px; color:#ffffff; border-top:1px solid var(--rule) }
+.footer{
+  padding: 20px 14px 80px;  /* arriba 20, lados 14, abajo 40 */
+}
 
 /* ====== REVEAL & PARALLAX ====== */
 .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease }
