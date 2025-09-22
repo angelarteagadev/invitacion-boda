@@ -499,3 +499,26 @@ p, .tl-head .tl-meta, .details-box .addr{
 @media (max-width: 600px){
   :root{ --glass: rgba(255,255,255,.14); --glass-strong: rgba(255,255,255,.20); }
 }
+/* — Banco / transferencia: texto en blanco — */
+.bankbox{
+  color: #fff !important;                    /* texto principal */
+}
+.bankbox .mono{ color:#fff !important; }     /* CLABE en blanco */
+.bankbox .bank-meta{ 
+  color: rgba(255,255,255,.85) !important;    /* líneas de institución/beneficiario */
+}
+
+/* botones dentro del bloque: borde y texto blancos */
+.bankbox .btn{
+  color:#fff !important;
+  border-color:#fff !important;
+  background: transparent !important;         /* se ve “outline” blanco */
+}
+
+/* opcional: hacer un pelín más sólido el panel para legibilidad */
+.bankbox{
+  background-color: rgba(255,255,255,.20) !important; /* sube o baja el .20 a tu gusto */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-color: rgba(255,255,255,.28) !important;
+}
