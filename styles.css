@@ -354,3 +354,12 @@ body::before{
   /* Ajusta el 58% hasta que te quede perfecto (50% es exacto centro) */
   background-position: center 58%;
 }
+/* iOS Safari detect: quita el 'fixed' para que no haga zoom */
+@supports (-webkit-touch-callout: none) {
+  :root[data-theme="dark"] body{
+    background-attachment: scroll !important; /* en iPhone */
+    background-position: center !important;
+    background-size: cover !important;
+  }
+}
+
