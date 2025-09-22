@@ -525,3 +525,25 @@ p, .tl-head .tl-meta, .details-box .addr{
   -webkit-backdrop-filter: blur(4px);
   border-color: rgba(255,255,255,.28) !important;
 }
+
+/* Confirmar asistencia en tono beige */
+.confirm-cta.sparkle{
+  background: linear-gradient(135deg,#f9f6f1,#e9e0d1,#f9f6f1) !important;
+  color:#121212 !important;
+  border:2px solid #121212 !important;
+  background-size:200% 200%;
+  animation: ctaGradient 6s ease-in-out infinite;
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.45),
+    0 0 0 1.5px rgba(18,18,18,.6) inset;
+}
+.confirm-cta.sparkle::before,
+.confirm-cta.sparkle::after{
+  background:
+    radial-gradient(6px 6px at 10% 60%,  rgba(240,230,210,.95) 0%, rgba(240,230,210,0) 60%),
+    radial-gradient(8px 8px at 85% 40%,  rgba(240,230,210,.95) 0%, rgba(240,230,210,0) 60%),
+    radial-gradient(5px 5px at 30% 10%,  rgba(240,230,210,.95) 0%, rgba(240,230,210,0) 60%),
+    radial-gradient(7px 7px at 70% 90%,  rgba(240,230,210,.95) 0%, rgba(240,230,210,0) 60%);
+  filter: drop-shadow(0 0 8px rgba(220,200,170,.55));
+}
