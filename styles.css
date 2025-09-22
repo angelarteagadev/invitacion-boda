@@ -362,4 +362,140 @@ body::before{
     background-size: cover !important;
   }
 }
+/* ===== SOLO MODO NOCHE (forzado) ===== */
 
+/* Paleta oscura global (sobrescribe todo lo anterior) */
+:root,
+:root[data-theme],
+:root[data-theme="light"],
+:root[data-theme="dark"]{
+  --bg:#000;
+  --paper:transparent;           /* que todo “papel” sea transparente */
+  --ink:#f2f2f2;
+  --ink-2:#d6d6d6;
+  --ink-3:#b8b8b8;
+  --rule:rgba(255,255,255,.18);
+  --shadow:rgba(0,0,0,0);
+  --btn-bg:#f1f1f1;
+  --btn-fg:#121212;
+  --gallery-bg:transparent;
+}
+
+/* Fondo general con la imagen 17 (sin alternar a claro) */
+body{
+  background:#000 url('assets/galeria/17.jpeg') center/cover no-repeat fixed;
+}
+
+/* iPhone/iPad: evitar zoom raro con background-attachment: fixed */
+@supports (-webkit-touch-callout: none) {
+  body{
+    background-attachment: scroll !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+}
+
+/* Cabecera en look oscuro consistente */
+.masthead{
+  background:repeating-linear-gradient(180deg,#121212,#121212 32px,#0f0f0f 33px) !important;
+  border-bottom-color: var(--rule) !important;
+}
+
+/* Bloques que antes tenían fondo: transparentar explícitamente */
+.card,
+.tick,
+.timeline-vertical .tl li .desc,
+.gallery figure,
+.bankbox{
+  background-color: transparent !important; /* SOLO el color, no la imagen */
+  box-shadow: none;
+}
+
+
+/* Velo para legibilidad sobre la foto */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.45));
+  pointer-events:none; z-index:0;
+}
+.paper{ position:relative; z-index:1; }
+
+/* Ocultar botón de tema */
+.theme-toggle,
+#themeToggle{ display:none !important; }
+
+/* --- Óvalo: asegura la imagen y ajusta el foco por tamaño --- */
+.photo-window .window{
+  background-image: url('assets/galeria/15.jpeg') !important; /* usa .jpg si aplica */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 52%; /* desktop */
+}
+
+/* teléfonos pequeños */
+@media (max-width: 420px){
+  .photo-window{ padding: 8px 10px 6px; }
+  .photo-window .window{
+    aspect-ratio: 4 / 3;          /* un poco más "apaisado" ayuda al recorte en móvil */
+    background-position: center 36%; /* baja el encuadre (sube el número si aún queda alta) */
+  }
+}
+
+/* teléfonos medianos */
+@media (min-width: 421px) and (max-width: 600px){
+  .photo-window .window{
+    aspect-ratio: 4.5 / 3;        /* leve ajuste de forma */
+    background-position: center 42%;
+  }
+}
+
+/* === Glass para legibilidad sobre el fondo === */
+:root{
+  /* opacidad base de los paneles */
+  --glass: rgba(255,255,255,.10);   /* 10% blanco */
+  --glass-strong: rgba(255,255,255,.16);
+  --glass-border: rgba(255,255,255,.22);
+}
+
+/* paneles principales */
+.card,
+.bankbox,
+.timeline-vertical .tl li .desc,
+.tick,
+.gallery figure{
+  background-color: var(--glass) !important;   /* antes usábamos transparent */
+  backdrop-filter: blur(4px);                  /* suaviza el fondo */
+  -webkit-backdrop-filter: blur(4px);
+  border-color: var(--glass-border) !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);      /* sombra ligera para separar */
+}
+
+/* cabecera y separadores */
+.masthead{
+  background:
+    linear-gradient(0deg, rgba(0,0,0,.35), rgba(0,0,0,.35)) , /* velo sutil */
+    repeating-linear-gradient(180deg,#121212,#121212 32px,#0f0f0f 33px) !important;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-bottom-color: var(--glass-border) !important;
+}
+
+/* los “ticks” del contador y cajitas pequeñas un poco más sólidas */
+.tick,
+.bankbox{ background-color: var(--glass-strong) !important; }
+
+/* mejorar contraste de textos secundarios sobre glass */
+p, .tl-head .tl-meta, .details-box .addr{
+  color: color-mix(in srgb, #ffffff 82%, transparent);
+}
+
+/* líneas divisorias más claras sobre glass */
+.lede, .details-box, .tl-head, .footer{
+  border-color: var(--glass-border) !important;
+}
+
+/* En móvil sube un poco la opacidad para legibilidad */
+@media (max-width: 600px){
+  :root{ --glass: rgba(255,255,255,.14); --glass-strong: rgba(255,255,255,.20); }
+}
